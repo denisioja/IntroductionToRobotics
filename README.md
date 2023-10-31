@@ -9,3 +9,10 @@ Photo:
 
 Link to the clip: https://youtu.be/OhXSOP024k4
 
+## Homework 2.
+TASK: This assignment involves simulating a 3-floor elevator control system usingLEDs, buttons, and a buzzer with Arduino.
+
+Photo:
+![HW2_ITR](https://github.com/denisioja/IntroductionToRobotics/assets/92025554/6a5d0978-0e31-4b6f-9088-7af4ba8f26ef)
+
+Link to the clip: https://youtu.be/YSSlY2bU5ng
