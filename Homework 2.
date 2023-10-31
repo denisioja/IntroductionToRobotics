@@ -1,0 +1,103 @@
+const int ledPinF3 = 13;
+const int buttonPinF3 = 7;
+
+const int ledPinF2 = 12;
+const int buttonPinF2 = 6;
+
+const int ledPinF1 = 11;
+const int buttonPinF1 = 5;
+
+const int buzzerPin = 10;
+const int ledPinON = 9;
+
+bool ledONState = true;
+
+void setup()
+{
+  pinMode(ledPinF3,OUTPUT);
+  pinMode(buttonPinF3, INPUT_PULLUP); 
+
+  pinMode(ledPinF2, OUTPUT);
+  pinMode(buttonPinF2, INPUT_PULLUP);
+
+  pinMode(ledPinF1, OUTPUT);
+  pinMode(buttonPinF1, INPUT_PULLUP);
+
+  pinMode(ledPinON, OUTPUT);
+  digitalWrite(ledPinON, ledONState);
+  
+  digitalWrite(ledPinF1, HIGH);
+  
+  pinMode(buzzerPin, OUTPUT);
+}
+
+void loop()
+{
+  int ButtonStateF3 = digitalRead(buttonPinF3); 
+  int ButtonStateF2 = digitalRead(buttonPinF2);
+  int ButtonStateF1 = digitalRead(buttonPinF1);
+
+  byte ledStateF1 = digitalRead(ledPinF1);
+  byte ledStateF2 = digitalRead(ledPinF2);
+  byte ledStateF3 = digitalRead(ledPinF3);
+
+  if(ButtonStateF3 == LOW)
+  {
+    if(ledStateF1 == HIGH)
+    {
+      digitalWrite(ledPinF1,LOW);
+      tone(buzzerPin, 500);
+      delay(1500);
+      digitalWrite(ledPinF2,HIGH);
+      tone(buzzerPin, 500);
+      delay(1500);
+    }
+    digitalWrite(ledPinF2, LOW);
+    tone(buzzerPin, 500);
+    delay(1500);
+    digitalWrite(ledPinF3,HIGH);
+    noTone(buzzerPin);
+    tone(buzzerPin, 300);
+    delay(1000);
+    noTone(buzzerPin);
+  }
+
+  if(ButtonStateF2 == LOW)
+  {
+    if(ledStateF1 == HIGH)
+      digitalWrite(ledPinF1, LOW);
+    else digitalWrite(ledPinF3, LOW);
+    tone(buzzerPin, 500);
+    delay(1500);
+    digitalWrite(ledPinF2, HIGH);
+    noTone(buzzerPin);
+    tone(buzzerPin, 300);
+    delay(1000);
+    noTone(buzzerPin);
+  }
+
+  if(ButtonStateF1 == LOW)
+  {
+    if(ledStateF3 == HIGH)
+    {
+      digitalWrite(ledPinF3, LOW);
+      tone(buzzerPin, 500);
+      delay(1500);
+      digitalWrite(ledPinF2, HIGH);
+      tone(buzzerPin, 500);
+      delay(1500);
+    }
+    digitalWrite(ledPinF2, LOW);
+    tone(buzzerPin, 500);
+    delay(1500);
+    digitalWrite(ledPinF1, HIGH);
+    noTone(buzzerPin);
+    tone(buzzerPin, 300);
+    delay(1000);
+    noTone(buzzerPin);
+  }
+}
+
+
+
+
