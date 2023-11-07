@@ -16,3 +16,8 @@ Photo:
 ![HW2_ITR](https://github.com/denisioja/IntroductionToRobotics/assets/92025554/6a5d0978-0e31-4b6f-9088-7af4ba8f26ef)
 
 Link to the clip: https://youtu.be/YSSlY2bU5ng
+
+## Homework 3.
+TASK: You will use the joystick to control the position of the segment and ”draw” on the display. The movement between segments should be natural, meaning they should jump from the current position only to neighbors, but without passing through ”walls”.
+
+Link to the clip: - 
