@@ -1,0 +1,117 @@
+// declare all the joystick pins
+const int pinSW = 2;  // digital pin connected to switch output
+const int pinX = A0;  // A0 - analog pin connected to X output
+const int pinY = A1;  // A1 - analog pin connected to Y output
+
+// declare all the segments pins
+const int pinA = 11;
+const int pinB = 10;
+const int pinC = 9;
+const int pinD = 8;
+const int pinE = 7;
+const int pinF = 6;
+const int pinG = 5;
+const int pinDP = 4;
+
+const int segSize = 8;
+const int directions = 4;
+int index = 0;
+
+// modify if you have common anode
+bool commonAnode = false;
+const int noOfDigits = 10;
+byte state = HIGH;
+byte dpState = LOW;
+byte swState = LOW;
+byte lastSwState = LOW;
+int xValue = 0;
+int yValue = 0;
+
+bool joyMoved = false;
+int digit = 0;
+int minThreshold = 400;
+int maxThreshold = 600;
+
+int segments[segSize] = {
+  pinA, pinB, pinC, pinD, pinE, pinF, pinG, pinDP
+};
+
+int segmentsMatrix[segSize][directions] = {
+  // U  D  L  R
+  { -1, -1, 9, -1 },  //dp
+  { 12, 8, -1, -1 },  //g
+  { 12, 5, -1, 10 },  //f
+  { 5, 8, -1, 9 },    //e
+  { 5, -1, 7, 9 },    //d
+  { 5, 8, 7, 4 },     //c
+  { 12, 5, 6, -1 },   //b
+  { -1, 5, 6, 10 }    //a
+};                    //pentru linia corecta = pin - 4
+
+// byte state = LOW;
+int StartPosition = 9;
+int position = StartPosition;
+
+void setup() {
+  // initialize all the pins
+  for (int i = 0; i < segSize; i++) {
+    pinMode(segments[i], OUTPUT);
+  }
+  pinMode(pinSW, INPUT_PULLUP);
+  if (commonAnode == true) {
+    state = !state;
+  }
+  // int position = 9;
+  digitalWrite(StartPosition, state);
+  Serial.begin(9600);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  int curentSegment = nextSegment(segmentsMatrix[segSize][directions], position);
+  digitalWrite(curentSegment, HIGH);
+  position = curentSegment;
+}
+
+int nextSegment(int segmentsMatrix[segSize][directions], int position) {
+  swState = digitalRead(pinSW);
+  xValue = analogRead(pinX);
+  yValue = analogRead(pinY);
+  int direction = -1;
+  int segment = position;
+  if (xValue < minThreshold && joyMoved == false) {  //left
+    direction = 2;
+    joyMoved = true;
+  }
+  if (xValue > maxThreshold && joyMoved == false) {  //right
+    direction = 3;
+    joyMoved = true;
+  }
+  if (yValue < minThreshold && joyMoved == false) {  //up
+    direction = 0;
+    joyMoved = true;
+  }
+  if (yValue > maxThreshold && joyMoved == false) {  //down
+    direction = 1;
+    joyMoved = true;
+  }
+  joyMoved = false;
+  // Serial.print(direction);
+  if(direction != -1){
+    Serial.print("Position:");
+    Serial.print(position);
+    Serial.print("\n");
+    Serial.print("direction:");
+    Serial.print(direction);
+    Serial.print("\n");
+     if (segmentsMatrix[position - 4][direction] > -1) {
+      segment = segmentsMatrix[position - 4][direction];
+    }
+    Serial.print("Segment:");
+    Serial.print(segment);
+    Serial.print("\n");
+  }
+  return segment;
+}
+
+
