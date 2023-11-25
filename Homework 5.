@@ -1,0 +1,337 @@
+#include <EEPROM.h>
+
+const int redPin = 5;
+const int greenPin = 6;
+const int bluePin = 7;
+const int trigPin = 9;
+const int echoPin = 10;
+const int photocellPin = A0;
+
+const int SSIaddress = 0;
+const int UATaddress = 2;
+const int LEDATaddress = 4;
+
+long duration = 0;
+int distance = 0;
+int photocellValue = 0;
+const int maxReadings = 10; // Maximum number of readings to store
+int ldrIndex = 0;
+int ultrasonicIndex = 0;
+int ldrReadings[maxReadings];
+float ultrasonicReadings[maxReadings];
+
+void setup(){
+  Serial.begin(9600);
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  PrintMainMenu();
+ 
+}
+
+void loop(){
+  int choice = 0;
+  if(Serial.available()){
+    choice = Serial.parseInt();
+    MainMenu(choice);
+    waitForSerialInput();
+  } 
+}
+
+void waitForSerialInput(){
+  while (Serial.available() > 0) {
+    char _ = Serial.read(); 
+  }
+  delay(100);
+}
+
+void PrintMainMenu(){
+  Serial.println("Main Menu:");
+  Serial.println("1. Sensor Settings");
+  Serial.println("2. Reset Logger Data");
+  Serial.println("3. System Status");
+  Serial.println("4. RGB LED Control");
+}
+
+void MainMenu(int choice){
+  int option = 0;
+  switch(choice){
+    case 1:
+      printSenSet();
+      waitForSerialInput();
+      if(Serial.available()){
+        option = Serial.parseInt();
+        SenSet(option);
+      }
+      break;
+    case 2:
+      printRLD();
+      waitForSerialInput();
+      if(Serial.available()){
+        option = Serial.parseInt();
+        RLD(option);
+      }
+      break;
+    case 3:
+      printSysSt();
+      waitForSerialInput();
+      if(Serial.available()){
+        option = Serial.parseInt();
+        SysSt(option);
+      }
+      break;
+    case 4:
+      printRGBLEDCtrl();
+      waitForSerialInput();
+      if(Serial.available()){
+        option = Serial.parseInt();
+        RGBLEDCtrl(option);
+      }
+      break;
+    default:
+      Serial.println("Invalid option. Please try again.");
+      PrintMainMenu();
+      waitForSerialInput();
+      break;
+  }
+}
+
+void printSenSet(){
+  Serial.println("\t1. Sensors Sampling Interval");
+  Serial.println("\t2. Ultrasonic Alert Threshold");
+  Serial.println("\t3. LDR Alert Threshold");
+  Serial.println("\t4. Back");
+}
+
+void printRLD(){
+  Serial.println("\tAre you sure?");
+  Serial.println("\t1. Yes");
+  Serial.println("\t2. No");
+}
+
+void printSysSt(){
+  Serial.println("\t1. Current Sensor Readings");
+  Serial.println("\t2. Current Sensor Settings");
+  Serial.println("\t3. Display Logged Data");
+  Serial.println("\t4. Back");
+}
+
+void printRGBLEDCtrl(){
+  Serial.println("\t1. Manual Color Control");
+  Serial.println("\t2. LED: Toggle Automatic ON/OFF");
+  Serial.println("\t3. Back");
+}
+
+void SenSet(int option){
+  int selection = 0;
+  switch(option){
+    case 1:
+      SSI();
+      break;
+    case 2:
+      UAT();
+      break;
+    case 3:
+      LEDAT();
+      break;
+    case 4:
+      PrintMainMenu();
+      waitForSerialInput();
+      break;
+    default:
+      Serial.println("Invalid option. Please try again.");
+      printSenSet();
+      int newoption = 0; 
+      waitForSerialInput();
+      newoption = Serial.parseInt();
+      SenSet(newoption);
+  }
+}
+
+void SSI(){
+  Serial.println("Please choose a value 1 and 10 seconds for the sampling rate:");
+  int value = 0;
+  while(value < 1 && value > 10){
+    value = Serial.parseInt();
+    Serial.println("Please choose a valid value:");
+  } 
+  EEPROM.update(SSIaddress, value);
+}
+
+void UAT(){
+  Serial.println("Please type the minimum threshold value for the ultrasonic sensor:");
+  int value = 0;
+  value = Serial.parseInt();
+  EEPROM.update(UATaddress, value);//massage when it's exceded
+}
+
+void LEDAT(){
+  Serial.println("Please type the minimum threshold value for the LDR senssor:");
+  int value = 0;
+  value = Serial.parseInt();
+  EEPROM.update(LEDATaddress, value);//massage when it's exceded
+}
+
+void RLD(int option){
+  int choice;
+  switch(option){
+    case 1:
+      for(int i = 0; i< EEPROM.length(); i++){
+        EEPROM.update(i, 0);
+      }
+      break;
+    case 2:
+      PrintMainMenu();
+      waitForSerialInput();
+      break;
+    default:
+      Serial.println("Invalid option. Please try again.");
+      printRLD();
+      waitForSerialInput();
+      choice = Serial.parseInt();
+      RLD(choice);
+  }
+}
+
+void SysSt(int option){
+  switch(option){
+      CSR();
+      break;
+    case 2:
+      CSS();
+      break;
+    case 3:
+      DLD();
+      break;
+    case 4:
+      PrintMainMenu();
+      waitForSerialInput();
+      break;
+    default:
+      Serial.println("Invalid option. Please try again.");
+      printSysSt();
+      waitForSerialInput();
+      int choice;
+      choice = Serial.parseInt();
+      SysSt(choice);
+  }
+}
+
+void CSR(){
+  unsigned long previousMillis = 0;
+  char userInput;
+  int exit = 1;
+  Serial.println("If you wish to exit, press 0.");
+  while(exit == 1){
+    unsigned long currentMillis = millis();
+    int samplingRate = EEPROM.read(SSIaddress);
+    if (currentMillis - previousMillis >= samplingRate) {
+      previousMillis = currentMillis;
+      int ldrValue = analogRead(photocellPin);
+      Serial.print("LDR Reading: ");
+      Serial.println(ldrValue);
+      float distance = readUltrasonicDistance();
+      Serial.print("Ultrasonic Distance: ");
+      Serial.println(distance);
+      ldrReadings[ldrIndex] = ldrValue;
+      ultrasonicReadings[ultrasonicIndex] = distance;
+    }
+    if(Serial.available()){
+        exit = Serial.parseInt();
+        break;
+    }
+  }
+}
+
+float readUltrasonicDistance() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  float duration = pulseIn(echoPin, HIGH);
+  float distance = duration * 0.034 / 2;  // Speed of sound is 34 cm/ms
+  return distance;
+}
+
+void CSS(){
+  Serial.print("Sampling rate:");
+  Serial.println(EEPROM.read(SSIaddress));
+  Serial.print("Threshold value:");
+  Serial.println(EEPROM.read(UATaddress));
+}
+
+void DLD(){
+  Serial.println("Last 10 LDR Readings:");
+  for (int i = 0; i < maxReadings; ++i) {
+    int index = (ldrIndex + i) % maxReadings;
+    Serial.print(ldrReadings[index]);
+    Serial.print(" ");
+  }
+  Serial.println();
+
+  Serial.println("Last 10 Ultrasonic Readings:");
+  for (int i = 0; i < maxReadings; ++i) {
+    int index = (ultrasonicIndex + i) % maxReadings;
+    Serial.print(ultrasonicReadings[index]);
+    Serial.print(" ");
+  }
+  Serial.println();
+}
+
+void RGBLEDCtrl(int option){
+  switch(option){
+    case 1:
+      // MCC();
+      break;
+    case 2:
+      // LEDTA();
+      break;
+    case 3:
+      PrintMainMenu();
+      waitForSerialInput();
+      break;
+    default:
+      Serial.println("Invalid option. Please try again.");
+      // printRGBLEDCtrlt();
+      waitForSerialInput();
+      int choice;
+      choice = Serial.parseInt();
+      RGBLEDCtrl(choice);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
