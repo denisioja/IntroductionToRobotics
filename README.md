@@ -24,3 +24,12 @@ Photo:
 ![ITR_HW3](https://github.com/denisioja/IntroductionToRobotics/assets/92025554/5d6c0210-68e9-4c98-8cf8-c63d3469b918)
 
 Link to the clip: - 
+
+## Homework 5.
+TASK: Develop a ”Smart Environment Monitor and Logger” using Arduino. This system will utilize various sensors to gather environmental data, log this data into EEPROM, and provide both visual feedback via an RGB LED and user interaction through a Serial Menu. The project focuses on integrating sensor readings,
+memory management, Serial Communication and the general objective of building a menu.
+
+Photo:
+![ITR_HW5](https://github.com/denisioja/IntroductionToRobotics/assets/92025554/09db99a6-b095-4020-8339-0eb27e26a9d6)
+
+Link to the clip: - 
