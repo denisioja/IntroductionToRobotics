@@ -33,3 +33,13 @@ Photo:
 ![ITR_HW5](https://github.com/denisioja/IntroductionToRobotics/assets/92025554/09db99a6-b095-4020-8339-0eb27e26a9d6)
 
 Link to the clip: - 
+
+## Matrix Game
+TASK:
+
+Photo:
+![WhatsApp Image 2023-12-18 at 11 13 32](https://github.com/denisioja/IntroductionToRobotics/assets/92025554/ca36a984-4d4a-4e79-ae56-99efc6cc3ac6)
+
+Link to the clip: -
+
+Link Wokwi: https://wokwi.com/projects/382730521058314241
