@@ -1,0 +1,32 @@
+#The game utilizes an Arduino Uno board, a LED matrix, a joystick, a button, and a 16x2 display to create a dynamic gaming environment. Players navigate through a randomly generated maze and strategically place bombs.
+
+#Components Used
+LED Matrix (8x8): Displays the evolving maze and player movements.
+Joystick (X and Y axis): Controls the player's movement within the maze.
+Button: Initiates bomb placement in the maze.
+16x2 Display: Provides real-time game information.
+Potentiometer: Adjusts the intensity of the 16x2 display.
+
+#Pin Configuration
+dinPin, clockPin, loadPin: Control the LED matrix.
+buttonPin: Initiates the bomb placement action.
+xPin, yPin: Analog pins for joystick input.
+potentiometerPin: Adjusts the intensity of the 16x2 display.
+
+#Global Variables
+matrixSize: Size of the LED matrix (8x8).
+matrix: 2D array representing the maze layout and bomb placements.
+xPos, yPos: Current position of the player within the maze.
+matrixBrightness: Initial brightness level of the LED matrix.
+moveInterval: Time interval for updating the player's position.
+minThreshold, maxThreshold: Threshold values for joystick movement.
+flickerDuration: Duration for LED flickering when a bomb is placed.
+
+#Functions
+setup(): Initializes the game environment, sets pin modes, generates the initial maze, and prepares the LED matrix for display.
+loop(): Manages player movement, bomb placement, LED matrix updates, and display intensity adjustments. The core function for continuous gameplay.
+updatePositions(): Reads joystick input, updates the player's position, and ensures valid moves within the maze. Updates the LED matrix accordingly.
+handleButtonPress(): Initiates bomb placement when the button is pressed. Triggers LED flickering and updates the maze layout.
+updateMatrix(): Iterates through the maze array, updating the LED matrix to reflect the current state of the maze.
+generateMaze(): Randomly generates a maze layout, populating the 2D array representing the maze. Sets the initial challenge for the player.
+displayMaze(): Shows the initial maze layout on the LED matrix with delays between each step, providing a visually appealing introduction to the game.
