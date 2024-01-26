@@ -37,6 +37,13 @@ Link to the clip: -
 ## Matrix Game
 TASK:
 
+##  Arduino radar with ultrasonic sensor.
+
+Photo:
+![poza_radar](https://github.com/denisioja/IntroductionToRobotics/assets/92025554/35fa27a6-3716-40a0-a49c-37925d4e3701)
+
+Link to the clip: https://youtube.com/shorts/AjYqw7PetEQ
+
 Photo:
 ![WhatsApp Image 2023-12-18 at 11 13 32](https://github.com/denisioja/IntroductionToRobotics/assets/92025554/ca36a984-4d4a-4e79-ae56-99efc6cc3ac6)
 
