@@ -37,19 +37,19 @@ Link to the clip: -
 ## Matrix Game
 TASK:
 
-##  Arduino radar with ultrasonic sensor.
-
-Photo:
-![poza_radar](https://github.com/denisioja/IntroductionToRobotics/assets/92025554/35fa27a6-3716-40a0-a49c-37925d4e3701)
-
-Link to the clip: https://youtube.com/shorts/AjYqw7PetEQ
-
 Photo:
 ![WhatsApp Image 2023-12-18 at 11 13 32](https://github.com/denisioja/IntroductionToRobotics/assets/92025554/ca36a984-4d4a-4e79-ae56-99efc6cc3ac6)
 
 Link to the clip: -
 
 Link Wokwi: https://wokwi.com/projects/382730521058314241
+
+##  Arduino radar with ultrasonic sensor.
+
+Photo:
+![poza_radar](https://github.com/denisioja/IntroductionToRobotics/assets/92025554/35fa27a6-3716-40a0-a49c-37925d4e3701)
+
+Link to the clip: https://youtube.com/shorts/AjYqw7PetEQ
 
 ## Sequence memory game
 TASK: 4 leds (with resistors), 4 buttons, 1 buzzer, 1 led RGB. Un fel de Simon Says, dar pe leduri. Iti apare un pattern (generat random). Trebuie sa pui pattern-ul ala intr-un interval rezonabil de timp. Daca-l faci corect, scoate un sunet bun, led-ul rgb se face verde si dupa apare alt pattern. Daca gresesti pattern-ul, scoate alt sunet "negativ", led-ul se face rosu dupa care apare alt pattern.
