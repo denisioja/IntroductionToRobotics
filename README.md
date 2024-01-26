@@ -50,3 +50,11 @@ Photo:
 Link to the clip: -
 
 Link Wokwi: https://wokwi.com/projects/382730521058314241
+
+## Sequence memory game
+TASK: 4 leds (with resistors), 4 buttons, 1 buzzer, 1 led RGB. Un fel de Simon Says, dar pe leduri. Iti apare un pattern (generat random). Trebuie sa pui pattern-ul ala intr-un interval rezonabil de timp. Daca-l faci corect, scoate un sunet bun, led-ul rgb se face verde si dupa apare alt pattern. Daca gresesti pattern-ul, scoate alt sunet "negativ", led-ul se face rosu dupa care apare alt pattern.
+
+Photo:
+![MemGame](https://github.com/denisioja/IntroductionToRobotics/assets/92025554/838d38d4-876e-4522-a544-e1797ea89987)
+
+Link to the clip: - 
