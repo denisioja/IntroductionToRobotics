@@ -1,51 +1,57 @@
-#include <Servo.h>.
+#include <Servo.h>
 
-const int trigPin = 10;
-const int echoPin = 11;
+const int trigPin = 10;     // Trigger pin for ultrasonic sensor
+const int echoPin = 11;     // Echo pin for ultrasonic sensor
 
-const int minAngle = 15;
-const int maxAngle = 165;
+const int minAngle = 15;    // Minimum angle for the servo
+const int maxAngle = 165;   // Maximum angle for the servo
 
-long duration;
-int distance;
+long duration;              // To store the duration of the pulse from the ultrasonic sensor
+int distance;               // To store the calculated distance from the ultrasonic sensor
 
-Servo myServo;
+Servo myServo;               // Servo object for controlling the servo motor
 
 void setup() {
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
-  Serial.begin(9600);
-  myServo.attach(12);
+  pinMode(trigPin, OUTPUT);  // Set trigPin as an OUTPUT to send ultrasonic pulses
+  pinMode(echoPin, INPUT);   // Set echoPin as an INPUT to receive ultrasonic echo pulses
+  Serial.begin(9600);        // Initialize serial communication for debugging
+  myServo.attach(12);        // Attach the servo to pin 12
 }
+
 void loop() {
+  // Sweep the servo from minAngle to maxAngle
   for (int i = minAngle; i <= maxAngle; i++) {
-    myServo.write(i);
-    delay(30);
-    distance = calculateDistance();  
-
-    Serial.print(i);         
-    Serial.print(",");       
-    Serial.print(distance);  
-    Serial.print(".");       
+    myServo.write(i);       // Set the servo to the current angle
+    delay(30);              // Delay to allow the servo to reach the angle
+    distance = calculateDistance();  // Measure and calculate the distance
+    Serial.print(i);         // Print the current angle
+    Serial.print(",");       // Separator
+    Serial.print(distance);  // Print the calculated distance
+    Serial.print(".");       // End of data point
   }
+
+  // Sweep the servo back from maxAngle to minAngle
   for (int i = maxAngle; i > minAngle; i--) {
-    myServo.write(i);
-    delay(15);
-    distance = calculateDistance();
-    Serial.print(i);
-    Serial.print(",");
-    Serial.print(distance);
-    Serial.print(".");
+    myServo.write(i);       // Set the servo to the current angle
+    delay(15);              // Delay to allow the servo to reach the angle
+    distance = calculateDistance();  // Measure and calculate the distance
+    Serial.print(i);         // Print the current angle
+    Serial.print(",");       // Separator
+    Serial.print(distance);  // Print the calculated distance
+    Serial.print(".");       // End of data point
   }
 }
 
+// Function to calculate the distance using the ultrasonic sensor
 int calculateDistance() {
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
+  digitalWrite(trigPin, LOW);         // Ensure trigPin is low
+  delayMicroseconds(2);                // Wait for 2 microseconds
+  digitalWrite(trigPin, HIGH);        // Send a 10 microsecond pulse to trigger the sensor
   delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-  duration = pulseIn(echoPin, HIGH);  
-  distance = duration * 0.034 / 2;
-  return distance;
+  digitalWrite(trigPin, LOW);         // Turn off the pulse
+  
+  duration = pulseIn(echoPin, HIGH);   // Measure the duration of the pulse from echoPin
+  distance = duration * 0.034 / 2;     // Calculate the distance using the speed of sound (343 meters/second)
+  
+  return distance;                     // Return the calculated distance
 }
